@@ -46,4 +46,9 @@ higlass-manage create superuser
 
 http://localhost:8989/admin/  ## must include "/" after "admin"
 
+higlass-manage ingest --filetype chromsizes-tsv --datatype chromsizes --assembly mm10 mm10.chrom.sizes 
+higlass-manage ingest --assembly mm10 W1_H4K20.final.shifted.bw
+higlass-manage ingest --assembly mm10 R1_H4K20.final.shifted.bw
+higlass-manage ingest W_10kb.cool
+
 pip install pandas==1.0
