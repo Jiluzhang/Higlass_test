@@ -28,4 +28,22 @@ brew install pkg-config
 
 pip install --upgrade setuptools
 
+pip install pandas==1.0
+
 pip install higlass-manage  # finally ok!!!! ^-^
+
+
+## Docker
+# Docker Desktop Community 2.2.0.5 (fit for mac 10.12.6)
+# https://download.docker.com/mac/stable/43884/Docker.dmg
+
+## https://docs.higlass.io/tutorial.html
+higlass-manage start
+
+docker ps -a
+#docker exec -it higlass-manage-container-default higlass-server/manage.py createsuperuser
+higlass-manage create superuser
+
+http://localhost:8989/admin/  ## must include "/" after "admin"
+
+pip install pandas==1.0
