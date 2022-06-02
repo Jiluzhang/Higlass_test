@@ -34,6 +34,13 @@ resolution = 10_000
 #mm10_arms = mm10_arms[mm10_arms['chrom'] != 'chrM']  # chrM is too short
 #mm10_arms.to_csv('mm10_arms.csv', index = False)
 mm10_arms = pd.read_csv('mm10_arms.csv')
+#chrom,start,end,name
+#chr1,0,195471971,chr1_p
+#chr2,0,182113224,chr2_p
+#chr3,0,160039680,chr3_p
+#chr4,0,156508116,chr4_p
+#chr5,0,151834684,chr5_p
+
 
 ## Load features for anchors
 h4k20me1 = bioframe.read_table('WH4K20_10kb.bedgraph')
