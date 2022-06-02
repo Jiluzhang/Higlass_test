@@ -25,17 +25,15 @@ brew update
 #or list them with brew outdated.
 
 brew install pkg-config
-
 pip install --upgrade setuptools
-
 pip install pandas==1.0
-
 pip install higlass-manage  # finally ok!!!! ^-^
 
 
 ## Docker
 # Docker Desktop Community 2.2.0.5 (fit for mac 10.12.6)
 # https://download.docker.com/mac/stable/43884/Docker.dmg
+
 
 ## https://docs.higlass.io/tutorial.html
 higlass-manage start
@@ -50,5 +48,3 @@ higlass-manage ingest --filetype chromsizes-tsv --datatype chromsizes --assembly
 higlass-manage ingest --assembly mm10 W1_H4K20.final.shifted.bw
 higlass-manage ingest --assembly mm10 R1_H4K20.final.shifted.bw
 higlass-manage ingest W_10kb.cool
-
-pip install pandas==1.0
