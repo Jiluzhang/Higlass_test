@@ -46,6 +46,7 @@ hig = h4k20me1[h4k20me1['score'] >= np.percentile(h4k20me1['score'], 95)]
 mid = h4k20me1[(h4k20me1['score'] >= np.percentile(h4k20me1['score'], 47.5)) &
                (h4k20me1['score'] <= np.percentile(h4k20me1['score'], 52.5))]
 low = h4k20me1[h4k20me1['score'] <= np.percentile(h4k20me1['score'], 5)]
+## hig: 1.29~10.34  mid: 0.21~0.24  low: 0~0.04
 #sites = bioframe.cluster(sites, min_dist = resolution * 5).drop_duplicates('cluster').reset_index(drop = True)
 # results from filteration and unfilteration are almost identity
 
