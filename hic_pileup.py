@@ -12,6 +12,9 @@ import numpy as np
 import cooltools
 import matplotlib.pyplot as plt
 import argparse
+import warnings
+
+warnings.filterwarnings('ignore')
 
 ## parse parameters
 parser = argparse.ArgumentParser(description = 'Hi-C pileup heatmap')
@@ -35,7 +38,7 @@ mm10_arms = pd.read_csv('mm10_arms.csv')
 ## Load features for anchors
 h4k20me1 = bioframe.read_table('WH4K20_10kb.bedgraph')
 h4k20me1.columns = ['chrom', 'start', 'end', 'score']
-h4k20me1 = h4k20me1.query(f'chrom in {wt_clr.chromnames}')
+h4k20me1 = h4k20me1.query(f'chrom in {clr.chromnames}')
 h4k20me1['mid'] = (h4k20me1.end + h4k20me1.start) // 2
 
 ## Select sites (high & mid & low)
@@ -50,8 +53,10 @@ low = h4k20me1[h4k20me1['score'] <= np.percentile(h4k20me1['score'], 5)]
 ## On-diagonal pileup of observed over expected interactions
 expected = cooltools.expected_cis(clr, view_df = mm10_arms, nproc = 20, chunksize = 1_000_000)
 
-for lev in [hig, mid, low]:
-    stack = cooltools.pileup(clr, lev, view_df = mm10_arms, expected_df = expected, flank = 500_000, nproc = 20)
+dict = {'high': hig, 'middle': mid, 'low': low}
+
+for lev in ['high', 'middle', 'low']:
+    stack = cooltools.pileup(clr, dict[lev], view_df = mm10_arms, expected_df = expected, flank = 500_000, nproc = 20)
     mtx = np.nanmean(stack, axis = 2)
     
     ## Plot heatmap
@@ -64,7 +69,7 @@ for lev in [hig, mid, low]:
     plt.yticks(ticks_pixels, ticks_kbp)
     plt.xlabel('relative position, kbp')
     plt.ylabel('relative position, kbp')
-    plt.savefig(sample + '_h4k20me1_' + lev '_pileup.pdf')
+    plt.savefig(sample + '_h4k20me1_' + lev + '_pileup.pdf')
     plt.close()
     
     print(sample, lev, 'done')
