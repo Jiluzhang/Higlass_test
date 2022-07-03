@@ -16,6 +16,8 @@ from plotnine import *
 
 warnings.filterwarnings('ignore')
 
+pd.set_option('display.max_rows', 2000)
+
 #bedtools makewindows -g ~/ref_genome/chrom_sizes/mm10.chrom.sizes -w 10000 > mm10_10kb.bed
 #bedtools intersect -a mm10_10kb.bed -b WH4K20_10kb.bedgraph -wa -wb | awk '{print $1 "\t" $2 "\t" $3 "\t" $7}' | \
 #awk '{if($3%10000==0) print$0}' > WH4K20_10kb_all.bedgraph   # pay attention to end of chromosome
@@ -35,9 +37,9 @@ h4k20me1['mid'] = (h4k20me1.end + h4k20me1.start) // 2
 h4k20me1 = h4k20me1[h4k20me1['score'] !=0]
 
 ## Select sites (high & low)
-hig = h4k20me1[h4k20me1['score'] >= np.percentile(h4k20me1['score'], 70)]
-low = h4k20me1[h4k20me1['score'] <  np.percentile(h4k20me1['score'], 70)]
-# 0.367184
+hig = h4k20me1[h4k20me1['score'] >= np.percentile(h4k20me1['score'], 95)]
+low = h4k20me1[h4k20me1['score'] <  np.percentile(h4k20me1['score'], 5)]
+# 1.303  0.058
 
 dict = {'high': hig, 'low': low}
 
@@ -57,12 +59,16 @@ def plot_oe_vs_dist(c, t):
         wt_stack = cooltools.pileup(wt_clr, paired_sites, view_df = mm10_arms, expected_df = wt_expected, flank = 0, nproc = 40)
         wt_tmp = paired_sites[['dist']]
         wt_tmp['oe'] = wt_stack[0][0]
+        #wt_tmp.dropna(inplace = True)
+        #wt_tmp = wt_tmp[wt_tmp['oe'] != 0]
         wt_res = wt_tmp[['dist', 'oe']].groupby('dist', as_index = False).mean()
         wt_res['idx'] = 'wt'
         
         mt_stack = cooltools.pileup(mt_clr, paired_sites, view_df = mm10_arms, expected_df = mt_expected, flank = 0, nproc = 40)
         mt_tmp = paired_sites[['dist']]
         mt_tmp['oe'] = mt_stack[0][0]
+        #mt_tmp.dropna(inplace = True)
+        #mt_tmp = mt_tmp[mt_tmp['oe'] != 0]
         mt_res = mt_tmp[['dist', 'oe']].groupby('dist', as_index = False).mean()
         mt_res['idx'] = 'mt'
         
@@ -78,3 +84,6 @@ def plot_oe_vs_dist(c, t):
         print(c, t, lev, 'h4k20me1 done')
 
 plot_oe_vs_dist(c = 'W1G1', t = 'R1G1')
+plot_oe_vs_dist(c = 'W2G1', t = 'R2G1')
+plot_oe_vs_dist(c = 'W_rep1', t = 'R_rep1')
+plot_oe_vs_dist(c = 'W_rep2', t = 'R_rep2')
